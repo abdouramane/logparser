@@ -19,11 +19,17 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
+        if(args == null || args.length == 0) {
+            throw new RuntimeException("File must not be empty : " +
+                    "java -cp log-parser-1.0-SNAPSHOT.jar fr.logparser.main.Main <file>");
+        }
+
         ILogRepository logRepository = new LogRepository(args[0], new LogLoader());
         IParser parser = new Parser(logRepository);
 
 
-        List<Server> servers = parser.getConnectedServers(Filter.ALL);
+        List<Server> servers = parser.getConnectedServers(Filter.BY_HOUR);
 
         System.out.println("################ - Servers list here : ");
         servers.forEach(System.out::println);

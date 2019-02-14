@@ -40,6 +40,7 @@ public class ParserTest {
         server.setName("local");
         server.setConnectedServers(Sets.newSet("apache", "ngix"));
         server.setNumberOfConnections(2);
+        servers.add(server);
 
     }
 
@@ -47,12 +48,18 @@ public class ParserTest {
     public void testGetAllServersConnections() throws IOException {
         when(logRepository.getAllLogs()).thenReturn(Optional.ofNullable(servers));
 
-        List<Server> servers = parser.getConnectedServers(Filter.ALL);
+        List<Server> result = parser.getConnectedServers(Filter.ALL);
 
-        Assert.assertNotNull(servers);
-        Assert.assertEquals(2, servers.size());
-        Assert.assertEquals("local", servers.get(0).getName());
-        Assert.assertEquals(3, servers.get(0).getNumberOfConnections().intValue());
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("local", result.get(0).getName());
+        Assert.assertEquals(2, result.get(0).getConnectedServers().size());
+        Assert.assertEquals(2, result.get(0).getNumberOfConnections().intValue());
+    }
+
+    @Test
+    public void testGetAllServersConnectionsByHour() {
+        //TODO
     }
 
 }
